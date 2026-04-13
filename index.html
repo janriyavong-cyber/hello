@@ -12,7 +12,7 @@ body {
   padding: 20px;
 }
 
-/* terminal box */
+
 #terminal {
   border: 1px solid #000000;
   padding: 15px;
@@ -20,7 +20,7 @@ body {
   overflow-y: auto;
 }
 
-/* input line */
+
 .input-line {
   display: flex;
 }
@@ -38,7 +38,7 @@ input {
   width: 100%;
 }
 
-/* cursor */
+
 .cursor::after {
   content: "_";
   animation: blink 1s infinite;
@@ -63,14 +63,14 @@ input {
 const terminal = document.getElementById("terminal");
 const input = document.getElementById("input");
 
-/* แปลงเป็น binary */
+
 function textToBinary(text) {
   return text.split("")
     .map(c => c.charCodeAt(0).toString(2).padStart(8,"0"))
     .join(" ");
 }
 
-/* พิมพ์ทีละตัว */
+
 function typeLine(text) {
   const line = document.createElement("div");
   terminal.appendChild(line);
@@ -89,26 +89,26 @@ function typeLine(text) {
   typing();
 }
 
-/* กด enter */
+
 input.addEventListener("keydown", function(e) {
   if (e.key === "Enter") {
     const value = input.value;
 
-    // แสดงคำสั่งที่พิมพ์
+    
     const command = document.createElement("div");
     command.innerText = "user@system:~$ " + value;
     terminal.appendChild(command);
 
-    // แปลง binary
+    
     const binary = textToBinary(value);
 
-    // พิมพ์ผลแบบ typewriter
+    
     typeLine(binary);
 
-    // clear input
+    
     input.value = "";
 
-    // scroll ลงล่าง
+    
     terminal.scrollTop = terminal.scrollHeight;
   }
 });
@@ -116,3 +116,4 @@ input.addEventListener("keydown", function(e) {
 
 </body>
 </html>
+
