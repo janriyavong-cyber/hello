@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pencil Maze (Demo) - Pac-Man Style</title>
+    <style>
+        body {
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #f0f0f0;
+            font-family: 'Courier New', Courier, monospace; 
+            overflow: hidden;
+        }
+
+        #game-container {
+            position: relative;
+            background-color: white; 
+            
+            border: 2px solid #333; 
+            box-shadow: 5px 5px 0px rgba(0,0,0,0.1); 
+        }
+
+        canvas {
+            display: block;
+            
+            filter: grayscale(100%) contrast(1.1) brightness(1.1);
+        }
+
+        #status-bar {
+            position: absolute;
+            top: -40px;
+            left: 0;
+            width: 100%;
+            text-align: center;
+            color: #333;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+
+    <div id="game-container">
+        <div id="status-bar">PRESS ARROWS TO MOVE</div>
+        <canvas id="gameCanvas"></canvas>
+    </div>
+
+    <script>
+        
+        const canvas = document.getElementById('gameCanvas');
+        const ctx = canvas.getContext('2d');
+        const statusBar = document.getElementById('status-bar');
+
+        const gridSize = 30; 
+        const cols = 21;    
+        const rows = 15;    
+
+        canvas.width = cols * gridSize;
+        canvas.height = rows * gridSize;
+
+        
+        let maze = [];
+        let player = { x: 1, y: 1 }; 
+        let exit = { x: cols - 2, y: rows - 2 }; 
+
+        
+        let animationFrame = 0;
+
+        
+        function generateMaze(x, y) {
+            maze[y][x] = 0; 
+
+            
+            const directions = [[0, -2], [0, 2], [-2, 0], [2, 0]];
+            directions.sort(() => Math.random() - 0.5); 
+
+            for (let [dx, dy] of directions) {
+                let nx = x + dx;
+                let ny = y + dy;
+
+                
+                if (nx > 0 && nx < cols && ny > 0 && ny < rows && maze[ny][nx] === 1) {
+                    maze[y + dy / 2][x + dx / 2] = 0; 
+                    generateMaze(nx, ny); 
+                }
+            }
+        }
+
+        
+        function resetGame() {
+            
+            maze = Array.from({ length: rows }, () => Array(cols).fill(1));
+            
+            generateMaze(1, 1); 
+            
+            maze[exit.y][exit.x] = 0;
+            
+            player = { x: 1, y: 1 };
+            statusBar.innerText = "FIND THE EXIT (TOP RIGHT)";
+            statusBar.style.color = "#333";
+        }
+
+        
+        function drawRoughLine(x1, y1, x2, y2, color, thickness) {
+            ctx.beginPath();
+            ctx.lineWidth = thickness;
+            ctx.strokeStyle = color;
+
+            
+            const jitter = (Math.random() - 0.5) * 1.5;
+            
+            ctx.moveTo(x1 + jitter, y1 + jitter);
+            ctx.lineTo(x2 + jitter, y2 + jitter);
+            
+            
+            ctx.moveTo(x1 - jitter, y1 - jitter);
+            ctx.lineTo(x2 - jitter, y2 - jitter);
+            
+            ctx.stroke();
+        }
+
+        function draw() {
+            
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            ctx.lineCap = 'round'; 
+
+            
+            for (let y = 0; y < rows; y++) {
+                for (let x = 0; x < cols; x++) {
+                    if (maze[y][x] === 1) {
+                        const cx = x * gridSize;
+                        const cy = y * gridSize;
+                        const pad = gridSize * 0.2; 
+
+                        
+                        for (let i = 0; i < 3; i++) { 
+                            drawRoughLine(cx + pad, cy + pad, cx + gridSize - pad, cy + gridSize - pad, "#444", 1.2);
+                            drawRoughLine(cx + gridSize - pad, cy + pad, cx + pad, cy + gridSize - pad, "#444", 1.2);
+                        }
+                    }
+                }
+            }
+
+            
+            const exX = exit.x * gridSize + gridSize/2;
+            const exY = exit.y * gridSize + gridSize/2;
+            drawRoughLine(exX - 8, exY - 8, exX + 8, exY + 8, "#222", 3);
+            drawRoughLine(exX + 8, exY - 8, exX - 8, exY + 8, "#222", 3);
+
+            
+            const px = player.x * gridSize + gridSize/2;
+            const py = player.y * gridSize + gridSize/2;
+            const radius = gridSize * 0.35;
+
+            ctx.beginPath();
+            ctx.fillStyle = "rgba(0, 0, 0, 0.85)"; 
+            
+            
+            const playerJitter = (Math.sin(animationFrame * 0.3) * 1.5);
+            ctx.arc(px + playerJitter, py, radius + playerJitter/2, 0, Math.PI * 2);
+            ctx.fill();
+
+            
+            const mouthAngle = 0.2 * Math.PI * Math.abs(Math.sin(animationFrame * 0.2));
+            if (mouthAngle > 0.05) {
+                ctx.beginPath();
+                ctx.moveTo(px + playerJitter, py);
+                ctx.arc(px + playerJitter, py, radius + 1, mouthAngle, Math.PI*2 - mouthAngle);
+                ctx.fillStyle = "white"; 
+                ctx.fill();
+            }
+        }
+
+        
+        function gameLoop() {
+            animationFrame++;
+            draw();
+            requestAnimationFrame(gameLoop); 
+        }
+
+        
+        window.addEventListener('keydown', e => {
+            let nextX = player.x;
+            let nextY = player.y;
+
+            if (e.key === 'ArrowUp' || e.key === 'w') nextY--;
+            if (e.key === 'ArrowDown' || e.key === 's') nextY++;
+            if (e.key === 'ArrowLeft' || e.key === 'a') nextX--;
+            if (e.key === 'ArrowRight' || e.key === 'd') nextX++;
+
+            
+            if (maze[nextY] && maze[nextY][nextX] === 0) {
+                player.x = nextX;
+                player.y = nextY;
+            }
+
+            
+            if (player.x === exit.x && player.y === exit.y) {
+                statusBar.innerText = "YOU WIN! PRESS SPACE TO RESET";
+                statusBar.style.color = "green";
+                
+                nextX = -1; nextY = -1; 
+            }
+        });
+
+        
+        window.addEventListener('keydown', e => {
+            if (e.code === 'Space' && player.x === exit.x && player.y === exit.y) {
+                resetGame();
+            }
+        });
+
+        
+        resetGame();
+        gameLoop(); 
+
+    </script>
+</body>
+</html>
