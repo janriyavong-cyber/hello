@@ -1,0 +1,15 @@
+/Users/jan/danjan/hello/PatternProject/bin/Debug/net10.0/PatternProject
+/Users/jan/danjan/hello/PatternProject/bin/Debug/net10.0/PatternProject.deps.json
+/Users/jan/danjan/hello/PatternProject/bin/Debug/net10.0/PatternProject.runtimeconfig.json
+/Users/jan/danjan/hello/PatternProject/bin/Debug/net10.0/PatternProject.dll
+/Users/jan/danjan/hello/PatternProject/bin/Debug/net10.0/PatternProject.pdb
+/Users/jan/danjan/hello/PatternProject/obj/Debug/net10.0/PatternProject.GeneratedMSBuildEditorConfig.editorconfig
+/Users/jan/danjan/hello/PatternProject/obj/Debug/net10.0/PatternProject.AssemblyInfoInputs.cache
+/Users/jan/danjan/hello/PatternProject/obj/Debug/net10.0/PatternProject.AssemblyInfo.cs
+/Users/jan/danjan/hello/PatternProject/obj/Debug/net10.0/PatternProject.csproj.CoreCompileInputs.cache
+/Users/jan/danjan/hello/PatternProject/obj/Debug/net10.0/PatternProject.sourcelink.json
+/Users/jan/danjan/hello/PatternProject/obj/Debug/net10.0/PatternProject.dll
+/Users/jan/danjan/hello/PatternProject/obj/Debug/net10.0/refint/PatternProject.dll
+/Users/jan/danjan/hello/PatternProject/obj/Debug/net10.0/PatternProject.pdb
+/Users/jan/danjan/hello/PatternProject/obj/Debug/net10.0/PatternProject.genruntimeconfig.cache
+/Users/jan/danjan/hello/PatternProject/obj/Debug/net10.0/ref/PatternProject.dll
