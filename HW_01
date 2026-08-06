@@ -1,0 +1,29 @@
+#include <iostream>
+#include <string>
+
+using namespace std;
+
+int main() {
+    string id, name, surname, faculty, course;
+
+    cout << "ID : ";
+    cin >> id;
+
+    cout << "Name : ";
+    cin >> name;
+
+    cout << "Surname : ";
+    cin >> surname;
+
+    cout << "Faculty : ";
+    cin >> faculty;
+
+    cout << "Course : ";
+    cin >> course;
+
+    cout << "\n-------- OUTPUT --------" << endl;
+    cout << name << " " << surname << endl;
+    cout << id << " " << faculty << " " << course << endl;
+
+    return 0;
+}
