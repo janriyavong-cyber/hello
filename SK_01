@@ -1,0 +1,32 @@
+#include <iostream>
+#include <string>
+
+using namespace std;
+
+int main() {
+    string num_r;
+    int e_u, water_u;
+
+    cout << "กรอกหมายเลขห้อง : ";
+    cin >> num_r;
+    cout << "กรอกจำนวนหน่วยไฟฟ้าที่ใช้ : ";
+    cin >> e_u;
+    cout << "กรอกจำนวนหน่วยน้ำที่ใช้ : ";
+    cin >> water_u;
+
+    double e_all = 5 * e_u;
+    double w_all = 2 * water_u;
+    double ew_all = e_all + w_all;
+    double ew_vat = ew_all * 0.07;
+    double ew_overall = ew_all + ew_vat;
+
+    cout << "============ใบแจ้งค่าใช้จ่าย============" << endl;
+    cout << "หมายเลขห้อง : " << num_r << endl;
+    cout << "ค่าไฟฟ้า : " << e_all << endl;
+    cout << "ค่าประปา : " << w_all << endl;
+    cout << "ยอดรวมก่อนภาษี : " << ew_all << endl;
+    cout << "ภาษี 7 % : " << ew_vat << endl;
+    cout << "ยอดสุทธิ : " << ew_overall << endl;
+
+    return 0;
+}
